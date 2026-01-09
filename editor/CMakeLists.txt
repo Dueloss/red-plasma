@@ -1,4 +1,7 @@
-add_executable(red_plasma_editor)
+add_executable(
+    red_plasma_editor
+    src/main.cpp
+)
 
 target_sources(red_plasma_editor
     PRIVATE

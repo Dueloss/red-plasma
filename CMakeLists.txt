@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(RP_BUILD_EDITOR "Build the editor" ON)
-option(RP_BUILD_SAMPLES "Build samples" ON)
+option(RP_BUILD_ENGINE "Build engine library" ON)
+option(RP_BUILD_SAMPLES "Build samples" OFF)
 
 add_subdirectory(shared)
 add_subdirectory(engine)
@@ -20,3 +21,4 @@ endif()
 if(RP_BUILD_EDITOR)
     add_subdirectory(editor)
 endif()
+

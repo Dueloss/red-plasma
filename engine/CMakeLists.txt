@@ -1,4 +1,7 @@
-add_library(red_plasma_engine STATIC)
+add_library(
+    red_plasma_engine STATIC
+    src/engine.cpp
+)
 
 target_include_directories(red_plasma_engine
     PUBLIC
@@ -14,3 +17,5 @@ target_link_libraries(red_plasma_engine
     PRIVATE
         red_plasma_shared
 )
+
+target_compile_features(red_plasma_engine PUBLIC cxx_std_20)

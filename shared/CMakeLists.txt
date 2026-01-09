@@ -1,11 +1,6 @@
-add_library(red_plasma_shared STATIC)
+add_library(red_plasma_shared INTERFACE)
 
 target_include_directories(red_plasma_shared
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-target_sources(red_plasma_shared
-    PRIVATE
-        # add .cpp files later
+  INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
