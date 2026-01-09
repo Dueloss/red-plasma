@@ -15,8 +15,8 @@ typedef enum rp_result
     RP_ERR_INVALID_ARGUMENT,
     RP_ERR_UNSUPPORTED_PLATFORM,
     RP_ERR_VULKAN_INIT_FAILED,
-    RP_ERR_SURFACE_FAILD,
-    RP_ERR_SWAPCHAIN_FAILD,
+    RP_ERR_SURFACE_FAILED,
+    RP_ERR_SWAPCHAIN_FAILED,
     RP_ERR_DEVICE_LOST,
     RP_ERR_UNKNOWN
 } rp_result_t;
@@ -54,6 +54,8 @@ typedef struct rp_engine_desc
     uint32_t width;
     uint32_t height;
     int enable_validation; // 0/1
+    const char* triangle_vert_spv_path;
+    const char* triangle_frag_spv_path;
 } rp_engine_desc_t;
 
 rp_result_t rp_engine_create(

@@ -1,0 +1,6 @@
+Refactor engine.cpp to improve readability and make it easier to maintain and extend.
+
+compile command
+```
+cmake -S . -B build && cmake --build build -j && ./build/editor/red_plasma_editor
+```

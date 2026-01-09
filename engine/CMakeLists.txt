@@ -13,9 +13,12 @@ target_sources(red_plasma_engine
         # engine source files later
 )
 
+find_package(Vulkan REQUIRED)
 target_link_libraries(red_plasma_engine
     PRIVATE
         red_plasma_shared
+        Vulkan::Vulkan
 )
 
+target_compile_definitions(red_plasma_engine PRIVATE VK_USE_PLATFORM_WAYLAND_KHR)
 target_compile_features(red_plasma_engine PUBLIC cxx_std_20)
