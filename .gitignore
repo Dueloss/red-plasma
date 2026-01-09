@@ -1,0 +1,18 @@
+/build*/
+**/build*/
+.cache/
+.idea/
+.vscode/
+*.user
+*.log
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# OS/editor cruft
+.DS_Store
+*~
