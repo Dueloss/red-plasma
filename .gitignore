@@ -1,0 +1,14 @@
+# CLion and IDEs
+.idea/
+cmake-build-*/
+*.user
+
+# Compiled binaries and libraries
+*.o
+*.so
+*.a
+bin/
+build/
+
+# System files
+.DS_Store
