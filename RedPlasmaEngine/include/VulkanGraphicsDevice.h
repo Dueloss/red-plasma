@@ -30,6 +30,8 @@ namespace RedPlasma {
 
         int CreateSurface(IWindowSurface* windowHandle) override;
         void AddExtension(const std::vector<const char*> &extensions) override;
+        int InitializeDevice(IWindowSurface* surface);
+        int setupSwapchain(IWindowSurface* surface);
 
     private:
         VkInstance m_Instance = VK_NULL_HANDLE;
@@ -40,6 +42,7 @@ namespace RedPlasma {
         VkQueue m_PresentQueue = VK_NULL_HANDLE;
         VkSurfaceKHR m_Surface = VK_NULL_HANDLE;
         std::vector<const char*> m_EnableExtension;
+        int m_graphicsFamilyIndex = 0;
     };
 } // RedPlasma
 

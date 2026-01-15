@@ -8,6 +8,8 @@ add_library(RedPlasmaEngine SHARED
         include/IWindowSurface.h
         include/VulkanGraphicsDevice.h
         include/WaylandSurface.h
+        include/VulkanWindowSurface.h
+        src/VulkanWindowSurface.cpp
 )
 
 # Tell the engine where to find its own header files

@@ -22,7 +22,8 @@
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Red Plasma Editor", nullptr, nullptr);
+    int width = 1280, height = 720;
+    GLFWwindow* window = glfwCreateWindow(width, height, "Red Plasma Editor", nullptr, nullptr);
 
     std::cout << "[Editor] Red Plasma Engine: Starting..." << std::endl;
     RedPlasma::Engine engine;
@@ -31,7 +32,7 @@ int main() {
     void* wl_surface = glfwGetWaylandWindow(window);
 
     auto* mySurface = new RedPlasma::WaylandSurface(wl_display, wl_surface);
-
+    mySurface->UpdateSize(width, height);
 
     engine.AttachWindow(mySurface);
 

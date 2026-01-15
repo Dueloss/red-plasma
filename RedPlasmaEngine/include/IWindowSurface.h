@@ -25,6 +25,9 @@ namespace RedPlasma {
         [[nodiscard]] virtual std::vector<const char*> GetRequiredExtensions() const = 0;
 
         virtual VkSurfaceKHR CreateSurface(VkInstance instance) = 0;
+        [[nodiscard]] virtual void* GetSurfaceHandle() = 0;
+        [[nodiscard]] virtual int GetWidth() const = 0;
+        [[nodiscard]] virtual int GetHeight() const = 0;
     };
 }
 #endif //REDPLASMA_IWINDOWSURFACE_H

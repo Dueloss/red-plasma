@@ -12,15 +12,98 @@
 //
 
 #include "../include/VulkanGraphicsDevice.h"
+
+#include <algorithm>
+
+#include "../include/IWindowSurface.h"
 #include <iostream>
 #include <vector>
-struct QueueFamilyIndices {
-  int graphicsFamily = -1;
-    [[nodiscard]] bool isComplete() const {
-        return graphicsFamily >= 0;
-    }
-};
+
+#include "VulkanWindowSurface.h"
+
 namespace RedPlasma {
+    struct QueueFamilyIndices {
+        int graphicsFamily = -1;
+        [[nodiscard]] bool isComplete() const {
+            return graphicsFamily >= 0;
+        }
+    };
+
+    struct SwapChainSupportDetails {
+        VkSurfaceCapabilitiesKHR capabilities;
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
+    };
+
+    const std::vector<const char*> deviceExtensions = {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    };
+
+    int VulkanGraphicsDevice::InitializeDevice(IWindowSurface* surface) {
+        if (!surface) {
+            return -1;
+        }
+
+        auto vkSurface = static_cast<VkSurfaceKHR>(dynamic_cast<VulkanWindowSurface*>(surface)->GetSurfaceHandle());
+
+        VkBool32 presentSupport = false;
+        vkGetPhysicalDeviceSurfaceSupportKHR(m_PhysicalDevice, m_graphicsFamilyIndex, vkSurface, &presentSupport);
+        if (!presentSupport) {
+            return -3;
+        }
+
+        float queuePriority = 1.0f;
+        VkDeviceQueueCreateInfo queueCreateInfo = {};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = m_graphicsFamilyIndex;
+        queueCreateInfo.queueCount = 1;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        VkPhysicalDeviceFeatures deviceFeatures = {};
+
+        VkDeviceCreateInfo createInfo = {};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.queueCreateInfoCount = 1;
+        createInfo.pQueueCreateInfos = &queueCreateInfo;
+        createInfo.pEnabledFeatures = &deviceFeatures;
+
+        createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+        createInfo.ppEnabledExtensionNames = deviceExtensions.data();
+
+        if (vkCreateDevice(m_PhysicalDevice, &createInfo, nullptr, &m_LogicalDevice) != VK_SUCCESS) {
+            return -2;
+        }
+
+        vkGetDeviceQueue(m_LogicalDevice, m_graphicsFamilyIndex, 0, &m_GraphicsQueue);
+
+        return setupSwapchain(surface);
+    }
+
+    int VulkanGraphicsDevice::setupSwapchain(IWindowSurface* surface) {
+        auto* vulkanSurface = dynamic_cast<VulkanWindowSurface*>(surface);
+        auto vkSurface = static_cast<VkSurfaceKHR>(dynamic_cast<VulkanWindowSurface*>(vulkanSurface)->GetSurfaceHandle());
+
+        VkSurfaceCapabilitiesKHR capabilities;
+        if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_PhysicalDevice, vkSurface, &capabilities) != VK_SUCCESS) {
+            return -5;
+        }
+
+        VkExtent2D swapchainExtent;
+
+        if (capabilities.currentExtent.width != UINT32_MAX) {
+            swapchainExtent = capabilities.currentExtent;
+        } else {
+            auto width = static_cast<uint32_t>(vulkanSurface->GetWidth());
+            auto height = static_cast<uint32_t>(vulkanSurface->GetHeight());
+
+            swapchainExtent.width = std::clamp(width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
+            swapchainExtent.height = std::clamp(height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
+
+        }
+
+        return 0; // Success
+    }
+
     VulkanGraphicsDevice::VulkanGraphicsDevice() {
 
     }
@@ -149,7 +232,7 @@ namespace RedPlasma {
         if (m_Surface == VK_NULL_HANDLE) {
             return -1;
         }
-        return -0;
+        return 0;
     }
 
     void VulkanGraphicsDevice::AddExtension(const std::vector<const char*> &extensions) {

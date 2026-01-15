@@ -39,9 +39,21 @@ namespace RedPlasma {
             vkCreateWaylandSurfaceKHR(instance, &createInfo, nullptr, &surface);
             return surface;
         }
+        [[nodiscard]] void* GetSurfaceHandle() override { return m_window; }
+
+        void UpdateSize(int w, int h) {
+            m_width = w;
+            m_height = h;
+        }
+
+        [[nodiscard]] int GetWidth() const override { return m_width; }
+        [[nodiscard]] int GetHeight() const override { return m_height; }
+
     private:
         void* m_display;
         void* m_window;
+        int m_width = 800;
+        int m_height = 600;
     };
 }
 #endif //REDPLASMA_WAYLANDSURFACE_H
